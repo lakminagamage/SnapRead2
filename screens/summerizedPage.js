@@ -10,6 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 const SummerizedPageScreen = () => {
     const navigation = useNavigation();
     const [sheetVisible, setSheetVisible] = useState(false);
+    const [summerizedText,setSummerizedText]=useState('briefly summerized doc');
+    const [selectedButton,setSelectedButton]=useState(0);
     const toggleBottomNavigationView = () => { 
         setSheetVisible(!sheetVisible);
     };
@@ -36,13 +38,7 @@ const SummerizedPageScreen = () => {
             <SafeAreaView style={{flex:1,marginTop:20}}>
                 <ScrollView style={{height:'50%'}}>
                     <Text style={styles.content}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.
-Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.
-Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.
-Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.
-Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.
-Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.
+                    {summerizedText}
                     </Text>
                 </ScrollView>
             </SafeAreaView>
@@ -50,9 +46,27 @@ Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.
 
             {/* begining of button option section */}
             <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'space-evenly'}}> 
-                <View style={styles.optionBtns}><Text style={styles.optionBtnsText}>Briefly</Text></View>
-                <View style={styles.optionBtns}><Text style={styles.optionBtnsText}>Moderately</Text></View>
-                <View style={[styles.optionBtns,styles.selectedBtn]}><Text style={styles.optionBtnsText}>Lengthily</Text></View>
+                <TouchableOpacity
+                style={[styles.optionBtns,(selectedButton==0)? styles.selectedBtn:null]}
+                onPress={() => {
+                setSummerizedText("briefly summerized doc");
+                setSelectedButton(0);
+                }}>
+                <Text style={styles.optionBtnsText}>Briefly</Text></TouchableOpacity>
+                <TouchableOpacity
+                style={[styles.optionBtns,(selectedButton==1)? styles.selectedBtn:null]}
+                onPress={() => {
+                setSummerizedText("moderately summerized doc");
+                setSelectedButton(1);
+                }}>
+                <Text style={styles.optionBtnsText}>Moderately</Text></TouchableOpacity>
+                <TouchableOpacity
+                style={[styles.optionBtns,(selectedButton==2)? styles.selectedBtn:null]}
+                onPress={() => {
+                setSummerizedText("Lengthily summerized doc");
+                setSelectedButton(2);
+                }}>
+                <Text style={styles.optionBtnsText}>Lengthily</Text></TouchableOpacity>
             </View>
             {/* end of button option section */}
 
