@@ -28,7 +28,7 @@ const SummerizedPageScreen = () => {
             {/* beging of topic section */}
             <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', paddingTop:'10%' }}>
                 <Text style={[styles.appName, { fontSize: 15}]}>Summarized Document</Text>
-                <Image source={(require('../assets/images/icons/volume.png'))} style={{width:30, height:20}}/>
+                <Image source={(require('../assets/images/icons/volume.png'))} style={{width:30, height:20}} onClick={()=>setSheetVisible(true)}/>
             </View>
             {/* end of topic section */}
 
