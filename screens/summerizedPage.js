@@ -6,6 +6,7 @@ import { textInputStyles } from '../assets/styles/textInputStyles';
 import { buttonStyles } from '../assets/styles/buttons';
 import { BottomSheet } from 'react-native-btr';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
 
 const SummerizedPageScreen = () => {
     const navigation = useNavigation();
