@@ -5,6 +5,28 @@ import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const recentFilesView=(recentFile)=>{
+    // {
+    //     fileName='SnapRead 23-07-2023 Doc1',
+    //     date='23-07-2023 17:12',
+    //     image=require('../assets/images/icons/Book.jpg')
+    // }
+    return(
+        <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
+            <TouchableOpacity style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}
+            onPress={()=> navigation.navigate('SummerizedPage')}
+            >
+                <Image source={recentFile.image} style={[styles.imageContent,styles.Border,{width:80, height:80,}]} />
+                <View style={{display: 'flex', flexDirection:'coloumn', alignItems: 'left', justifyContent:'space-between', paddingBottom:'5%'}}>
+                
+                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :23, fontWeight: 'bold'}]}>{recentFile.fileName}</Text>
+                    <Text style={[styles.textContent,{color: defcolors.gray, fontSize :20, fontWeight: 'bold'}]}>created {recentFile.date}</Text>
+
+                </View>
+            </TouchableOpacity>
+            </View>
+    )
+  }
   return (
     <View style={styles.container}>
             
@@ -29,64 +51,6 @@ const HomeScreen = () => {
             
             </View>
             
-
-            
-
-            <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
-            <TouchableOpacity style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}
-            onPress={()=> navigation.navigate('SummerizedPage')}
-            >
-                <Image source={require('../assets/images/icons/Book.jpg')} style={[styles.imageContent,styles.Border,{width:80, height:80,}]} />
-                <View style={{display: 'flex', flexDirection:'coloumn', alignItems: 'left', justifyContent:'space-between', paddingBottom:'5%'}}>
-                
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :23, fontWeight: 'bold'}]}>SnapRead 23-07-2023</Text>
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :18, fontWeight: 'bold'}]}>Doc1</Text>
-                    <Text style={[styles.textContent,{color: defcolors.gray, fontSize :20, fontWeight: 'bold'}]}>created 23-07-2023 17:12</Text>
-
-                </View>
-            </TouchableOpacity>
-            </View>
-
-            <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
-            <TouchableOpacity onPress={()=> navigation.navigate('SummerizedPage')} style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
-                <Image source={require('../assets/images/icons/Book.jpg')} style={[styles.imageContent,styles.Border,{width:80, height:80,}]} />
-                <View style={{display: 'flex', flexDirection:'coloumn', alignItems: 'left', justifyContent:'space-between', paddingBottom:'5%'}}>
-                
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :23, fontWeight: 'bold'}]}>SnapRead 23-07-2023</Text>
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :18, fontWeight: 'bold'}]}>Doc1</Text>
-                    <Text style={[styles.textContent,{color: defcolors.gray, fontSize :20, fontWeight: 'bold'}]}>created 23-07-2023 17:12</Text>
-
-                </View>
-
-            </TouchableOpacity>
-            </View>
-            {/*selectedFile*/}
-            <View style={[styles.selectedFile,{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }]}>
-                <TouchableOpacity onPress={()=> navigation.navigate('SummerizedPage')} style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
-                <Image source={require('../assets/images/icons/Book.jpg')} style={[styles.imageContent,styles.Border,{width:80, height:80,}]} />
-                <View style={{display: 'flex', flexDirection:'coloumn', alignItems: 'left', justifyContent:'space-between', paddingBottom:'5%'}}>
-                
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :23, fontWeight: 'bold'}]}>SnapRead 23-07-2023</Text>
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :18, fontWeight: 'bold'}]}>Doc1</Text>
-                    <Text style={[styles.textContent,{color: defcolors.gray, fontSize :20, fontWeight: 'bold'}]}>created 23-07-2023 17:12</Text>
-
-                </View>
-                </TouchableOpacity>
-            </View>
-            {/*End of the selected file*/}
-
-            <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
-            <TouchableOpacity onPress={()=> navigation.navigate('SummerizedPage')} style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
-                <Image source={require('../assets/images/icons/Book.jpg')} style={[styles.imageContent,styles.Border,{width:80, height:80,}]} />
-                <View style={{display: 'flex', flexDirection:'coloumn', alignItems: 'left', justifyContent:'space-between', paddingBottom:'5%'}}>
-                
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :23, fontWeight: 'bold'}]}>SnapRead 23-07-2023</Text>
-                    <Text style={[styles.textContent,{color: defcolors.white, fontSize :18, fontWeight: 'bold'}]}>Doc1</Text>
-                    <Text style={[styles.textContent,{color: defcolors.gray, fontSize :20, fontWeight: 'bold'}]}>created 23-07-2023 17:12</Text>
-
-                </View>
-            </TouchableOpacity>
-            </View>
             {/*End of the recent files section*/}
         
 
