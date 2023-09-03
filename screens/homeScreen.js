@@ -11,7 +11,7 @@ const HomeScreen = () => {
             <StatusBar backgroundColor={defcolors.midnightGray} />
 
             
-            <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', paddingTop: 30, paddingBottom:20}}>
+            <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', paddingTop: 20, paddingBottom:20}}>
                 <Image source={require('../assets/images/icons/logo.png')} style={{width:35, height:35,}} />
                 <Text style={{color: defcolors.purple, fontSize :40, fontWeight: 'bold',paddingLeft:'5%'}}>SnapRead</Text>
                 
@@ -20,7 +20,7 @@ const HomeScreen = () => {
             {/*Recent files section*/}
             <View style={{display: 'flex', flexDirection:'row', alignItems: 'center', justifyContent:'space-between', }}>
             
-                <Text style={{color: defcolors.purple, fontSize :35, fontWeight: 'bold',paddingTop:"10%", paddingBottom:"10%"}}>Recent files</Text>
+                <Text style={{color: defcolors.purple, fontSize :35, fontWeight: 'bold',paddingTop:"5%", paddingBottom:"8%"}}>Recent files</Text>
                 <Image source={require('../assets/images/icons/delete.png')} style={{width:20, height:20,marginLeft:'20%',}} />
                 <View style={{display: 'flex', flexDirection:'coloumn', alignItems: 'center', justifyContent:'space-between',paddingTop:"3%" }}>
                         <Image source={require('../assets/images/icons/All.png')} style={{width:20, height:20,paddingLeft:'1%'}} />

@@ -6,12 +6,36 @@ import { textInputStyles } from "../assets/styles/textInputStyles";
 import { buttonStyles } from "../assets/styles/buttons";
 import { useNavigation } from "@react-navigation/native";
 import {useState} from 'react';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 const LoginScreen = () => {
     const navigation = useNavigation();
     const[username,setUsername] = useState('');
     const[password,setPassword] = useState('');
+    
+    const [email, setEmail] = useState("");
+    
+    const auth=getAuth();
+    const handleLogin = () => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                // Navigate to the next screen or perform any necessary actions
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // Handle the authentication error here
+                // ...
+            });
+    };
+
+    
+    
+
     return(
         <View style={styles.container2}>
             <StatusBar backgroundColor={defcolors.midnightGray}/>
@@ -19,9 +43,9 @@ const LoginScreen = () => {
 
             <View style={[textInputStyles.credentialInputContainerForFullPage,{marginTop:40}]}>
                 <Text style={textInputStyles.credentialInputTitle}>Email</Text>  
-                <TextInput onChangeText={text => setUsername(text)} style={textInputStyles.credentialInput} placeholder="Enter your Email" placeholderTextColor={defcolors.gray} /> 
+                <TextInput  onChangeText={text => setEmail(text)} style={textInputStyles.credentialInput} placeholder="Enter your Email" placeholderTextColor={defcolors.gray} /> 
                 <Text style={[textInputStyles.credentialInputTitle,{marginTop:15}]}>Password</Text>  
-                <TextInput onChangeText={text => setUsername(text)} style={textInputStyles.credentialInput} secureTextEntry={true} placeholder="Enter your Password" placeholderTextColor={defcolors.gray} />  
+                <TextInput secureTextEntry={true} onChangeText={text => setPassword(text)} style={textInputStyles.credentialInput}  placeholder="Enter your Password" placeholderTextColor={defcolors.gray} />  
 
                 <TouchableOpacity 
                 onPress={() => navigation.navigate('ForgotPassword')}
@@ -31,7 +55,8 @@ const LoginScreen = () => {
 
                 <Text style={textInputStyles.credentialInputTitle}></Text>
                 <TouchableOpacity  style={buttonStyles.primaryButton}
-                onPress={() => navigation.navigate('Home')}
+                
+                onPress={() => navigation.navigate('handleLogin')}
                 >
                     <Text style={{color:defcolors.white, fontSize:17,fontWeight:'bold'}}>Log In</Text>
                 </TouchableOpacity>
