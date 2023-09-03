@@ -10,12 +10,16 @@ import ForgotPasswordScreen from './screens/forgotPassword';
 import HomeScreen from './screens/homeScreen';
 import SummerizedPageScreen from './screens/summerizedPage';
 
+import CameraScreen from './screens/camera';
+
 const Stack = createNativeStackNavigator();
 
 function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Camera" options={{headerShown:false}} component={CameraScreen} />
         <Stack.Screen name="Login" options={{headerShown:false}} component={LoginScreen} />
         <Stack.Screen name="Signup" options={{headerShown:false}} component={SignupScreen} />
         <Stack.Screen name="ForgotPassword" options={{headerShown:false}} component={ForgotPasswordScreen} />
