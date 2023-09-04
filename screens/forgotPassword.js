@@ -1,13 +1,27 @@
 import { StyleSheet, View, Text, StatusBar, Image, TextInput, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { defcolors } from '../assets/colors/colors'
 import { textInputStyles } from '../assets/styles/textInputStyles';
 import { buttonStyles } from '../assets/styles/buttons';
 import { useNavigation } from '@react-navigation/native';
 
+import { getAuth,sendPasswordResetEmail } from '@firebase/auth';
+
 const ForgotPasswordScreen = () => {
     const navigation = useNavigation();
+    const [email,setEmail]=useState('');
+    const authentication=getAuth();
+
+
+    const handleForgotPassword =()=>{
+        sendPasswordResetEmail(authentication,email)
+        .then((email) =>{
+            alert('Password reset link is sent to your email');
+        })
+    }
+     
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={defcolors.midnightGray} />
@@ -17,9 +31,9 @@ const ForgotPasswordScreen = () => {
 
             <View style={[textInputStyles.credentialInputContainer,{marginTop:50}]}>
                 <Text style={textInputStyles.credentialInputTitle}>Email</Text>
-                <TextInput style={textInputStyles.credentialInput} placeholder="Enter your email" placeholderTextColor={defcolors.gray} />
+                <TextInput value={email} style={textInputStyles.credentialInput} placeholder="Enter your email" placeholderTextColor={defcolors.gray} onChangeText={(text) => setEmail(text)} />
 
-                <TouchableOpacity style={buttonStyles.primaryButton} >
+                <TouchableOpacity onPress={handleForgotPassword} style={buttonStyles.primaryButton} >
                     <Text style={{color:defcolors.white, fontSize:17,fontWeight:'500'}}>Reset Your Password</Text>
                 </TouchableOpacity>
 
