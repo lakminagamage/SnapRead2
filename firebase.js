@@ -1,6 +1,7 @@
 
 import { initializeApp } from "firebase/app";
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyC98YU4a1YNgJaTOLBGOv6IB9lbXefDaGU",
   authDomain: "snapread-1e413.firebaseapp.com",
@@ -11,4 +12,6 @@ const firebaseConfig = {
   measurementId: "G-KN9G5W0M1W"
 };
 
+
 const app = initializeApp(firebaseConfig);
+
