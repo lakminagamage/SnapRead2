@@ -22,8 +22,7 @@ const LoginScreen = () => {
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
-                // Navigate to the next screen or perform any necessary actions
-                // ...
+                navigation.replace('Home');
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -43,9 +42,9 @@ const LoginScreen = () => {
 
             <View style={[textInputStyles.credentialInputContainerForFullPage,{marginTop:40}]}>
                 <Text style={textInputStyles.credentialInputTitle}>Email</Text>  
-                <TextInput  onChangeText={text => setEmail(text)} style={textInputStyles.credentialInput} placeholder="Enter your Email" placeholderTextColor={defcolors.gray} /> 
+                <TextInput  value={email} onChangeText={text => setEmail(text)} style={textInputStyles.credentialInput} placeholder="Enter your Email" placeholderTextColor={defcolors.gray} /> 
                 <Text style={[textInputStyles.credentialInputTitle,{marginTop:15}]}>Password</Text>  
-                <TextInput secureTextEntry={true} onChangeText={text => setPassword(text)} style={textInputStyles.credentialInput}  placeholder="Enter your Password" placeholderTextColor={defcolors.gray} />  
+                <TextInput value={password} secureTextEntry={true} onChangeText={text => setPassword(text)} style={textInputStyles.credentialInput}  placeholder="Enter your Password" placeholderTextColor={defcolors.gray} />  
 
                 <TouchableOpacity 
                 onPress={() => navigation.navigate('ForgotPassword')}
@@ -56,7 +55,7 @@ const LoginScreen = () => {
                 <Text style={textInputStyles.credentialInputTitle}></Text>
                 <TouchableOpacity  style={buttonStyles.primaryButton}
                 
-                onPress={() => navigation.navigate('handleLogin')}
+                onPress={handleLogin}
                 >
                     <Text style={{color:defcolors.white, fontSize:17,fontWeight:'bold'}}>Log In</Text>
                 </TouchableOpacity>

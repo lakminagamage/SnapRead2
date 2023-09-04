@@ -22,9 +22,9 @@ const SignupScreen = () =>{
     const handleSignUp =()=>{
         createUserWithEmailAndPassword(auth, email, password1)
         .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            // ...
+            
+            navigation.navigate('Login');
+           
         })
         .catch((error) => {
            alert(error.message);
