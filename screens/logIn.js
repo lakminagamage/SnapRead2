@@ -26,11 +26,39 @@ const LoginScreen = () => {
             })
             .catch((error) => {
                 const errorCode = error.code;
-                const errorMessage = error.message;
-                // Handle the authentication error here
-                // ...
+                if(errorCode==="auth/user-not-found"){
+                    alert("User not found,Please check your email.");
+                }
+                else if(errorCode==="auth/wrong-password"){
+                    alert("Wrong credentials");
+                }
+                else if(errorCode==="auth/missing-password"){
+                    alert("Please enter a password");
+                }
+                else if(errorCode==="auth/user-disabled"){
+                    alert("User disabled.contact customer support");
+                }
+                else if(errorCode==="auth/network-request-failed"){
+                    alert("Please check your internet connection");
+                }
+                else {
+                    alert(error.message);
+                }
+                
             });
     };
+
+    const validateLogin =() =>{
+        if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+            alert('Entered email is invalid!');
+        }
+        else if(password==""){
+            alert('Please enter password');
+        }
+        else{
+            handleLogin();
+        }
+    }
 
     
     
@@ -55,7 +83,7 @@ const LoginScreen = () => {
                 <Text style={textInputStyles.credentialInputTitle}></Text>
                 <TouchableOpacity  style={buttonStyles.primaryButton}
                 
-                onPress={handleLogin}
+                onPress={validateLogin}
                 >
                     <Text style={{color:defcolors.white, fontSize:17,fontWeight:'bold'}}>Log In</Text>
                 </TouchableOpacity>

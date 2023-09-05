@@ -20,6 +20,14 @@ const ForgotPasswordScreen = () => {
             alert('Password reset link is sent to your email');
         })
     }
+    const validateForgotPassword =()=>{
+        if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+            alert('Entered email is invalid!');
+        }
+        else{
+            handleForgotPassword();
+        }
+    }
      
 
     return (
@@ -33,7 +41,7 @@ const ForgotPasswordScreen = () => {
                 <Text style={textInputStyles.credentialInputTitle}>Email</Text>
                 <TextInput value={email} style={textInputStyles.credentialInput} placeholder="Enter your email" placeholderTextColor={defcolors.gray} onChangeText={(text) => setEmail(text)} />
 
-                <TouchableOpacity onPress={handleForgotPassword} style={buttonStyles.primaryButton} >
+                <TouchableOpacity onPress={validateForgotPassword} style={buttonStyles.primaryButton} >
                     <Text style={{color:defcolors.white, fontSize:17,fontWeight:'500'}}>Reset Your Password</Text>
                 </TouchableOpacity>
 
