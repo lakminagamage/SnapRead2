@@ -82,7 +82,7 @@ const SignupScreen = () =>{
             <View style={{justifyContent:'center',display:'flex',flexDirection:'row',marginTop:25}}>           
             <Text style={{ color: defcolors.gray, fontSize: 15}}>Already have an account? </Text>
                 <TouchableOpacity
-                onPress={() => navigation.navigate('LoginScreen')}
+                onPress={() => navigation.navigate('Login')}
                 >
                     <Text style={{color:defcolors.gray, fontSize:16,fontWeight:'bold',paddingRight:30}}>Log In</Text>
                 </TouchableOpacity>
