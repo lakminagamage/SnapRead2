@@ -12,9 +12,9 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 const LoginScreen = () => {
     const navigation = useNavigation();
     const[username,setUsername] = useState('');
-    const[password,setPassword] = useState('');
+    const[password,setPassword] = useState('123456');
     
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("test@gmail.com");
     
     const auth=getAuth();
     const handleLogin = () => {
@@ -22,6 +22,7 @@ const LoginScreen = () => {
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+                console.log(user.email);
                 navigation.replace('Home');
             })
             .catch((error) => {

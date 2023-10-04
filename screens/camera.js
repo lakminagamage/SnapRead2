@@ -7,7 +7,7 @@ import { defcolors } from "../assets/colors/colors";
 import { useNavigation } from "@react-navigation/native";
 import CameraButton from "../assets/styles/cameraButton";
 
-const cameraScreen = () => {
+const CameraScreen = () => {
     const [hasCameraPermission, setHasCameraPermission] = React.useState(null);
     const [image, setImage] = React.useState(null);
     const [type, setType] = React.useState(Camera.Constants.Type.back);
@@ -98,7 +98,7 @@ const cameraScreen = () => {
 };
 
 
-export default cameraScreen;
+export default CameraScreen;
 
 
 const styles = StyleSheet.create({
