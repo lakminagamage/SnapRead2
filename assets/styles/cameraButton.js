@@ -6,14 +6,14 @@ import { defcolors } from '../colors/colors';
 export default function CameraButton({ onPress, icon ,color}) {
     return (
         <TouchableOpacity onPress={onPress} style={styles.button}>
-            <MaterialCommunityIcons name={icon} size={40} style={{color:defcolors.purple}} />
+            <MaterialCommunityIcons name={icon} size={30} style={{color:defcolors.white}} />
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     button: {
-        height: 60,
+        marginVertical:10,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

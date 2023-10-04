@@ -196,7 +196,8 @@ const HomeScreen = () => {
 
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.buttonSection]}>
+                <TouchableOpacity style={[styles.buttonSection]}
+                    onPress={() => navigation.navigate('Camera')}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('../assets/images/icons/camera.png')} style={{ width: 15, height: 15, }} />
                         <Text style={{ color: defcolors.gray, fontSize: 18, marginLeft: 10 }}>Camera</Text>
