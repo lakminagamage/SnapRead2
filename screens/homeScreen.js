@@ -11,59 +11,71 @@ const HomeScreen = () => {
                 "key": 1,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 2,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 3,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 4,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 5,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 6,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 7,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 8,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
             {
                 "key": 9,
                 "fileName": "SnapRead 23-07-2023 Doc1",
                 "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg')
+                "image": require('../assets/images/icons/Book.jpg'),
+                selected: false
             },
         ]
     )
-    const [selectedText, setSelectedText] = useState(-1)
+
+    const [currentMode, setCurrentMode] = useState(false) // false -> Normal mode, true -> Selection mode
+    const [allSelected, setAllSelected] = useState(false) // false -> All not selected, true -> All selected
+
     const recentFileCardView = (recentFile) => {
         // {
         //     key:1,
@@ -72,9 +84,29 @@ const HomeScreen = () => {
         //     image:require('../assets/images/icons/Book.jpg')
         // }
         return (
-            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingHorizontal:20, paddingVertical:5 }}
-                onPress={() => navigation.navigate('SummerizedPage')}
-            >
+            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 5, backgroundColor: recentFile.selected ? defcolors.lightGray : 'transparent' }}
+                onPress={() => {
+                    if (!currentMode) {
+                        navigation.navigate('SummerizedPage')
+                    } else {
+                        let temp = [...recentFiles]
+                        temp[recentFile.key - 1].selected = !temp[recentFile.key - 1].selected
+                        setRecentFiles([...temp])
+
+                        if (getSelectedCount() == 0) {
+                            setCurrentMode(false)
+                        }
+                    }
+
+                }}
+                onLongPress={() => {
+                    if (!currentMode) {
+                        setCurrentMode(true)
+                        let temp = [...recentFiles]
+                        temp[recentFile.key - 1].selected = true
+                        setRecentFiles([...temp])
+                    }
+                }}>
                 <Image source={recentFile.image} style={[styles.imageContent, styles.Border, { width: 80, height: 80, }]} />
                 <View style={{ display: 'flex', flexDirection: 'coloumn', alignItems: 'left' }}>
 
@@ -85,6 +117,18 @@ const HomeScreen = () => {
             </TouchableOpacity>
         )
     }
+
+    const getSelectedCount = () => {
+        let selectedCount = 0;
+        for (let file of recentFiles) {
+            if (file.selected) {
+                selectedCount++;
+            }
+        }
+        console.log(selectedCount);
+        return selectedCount;
+    }
+
     return (
         <View style={styles.container}>
 
@@ -98,14 +142,39 @@ const HomeScreen = () => {
 
             {/*Recent files section*/}
             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 20, marginHorizontal: 20 }}>
-                <Text style={{ color: defcolors.gray, fontSize: 25, fontWeight: 'bold' }}>Recent files</Text>
-                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={require('../assets/images/icons/delete.png')} style={{ width: 20, height: 20, marginHorizontal: 20 }} />
-                    <View style={{ display: 'flex', flexDirection: 'coloumn', alignItems: 'center', marginTop: 10 }}>
-                        <Image source={require('../assets/images/icons/All.png')} style={{ width: 20, height: 20 }} />
-                        <Text style={{ color: defcolors.gray, fontSize: 10, marginTop: 3 }}>All</Text>
+                <Text style={{ color: defcolors.gray, fontSize: 22, fontWeight: 'bold' }}>Recent files</Text>
+                {currentMode ? (
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <TouchableOpacity>
+                            <Image source={require('../assets/images/icons/delete.png')} style={{ width: 20, height: 20, marginHorizontal: 30 }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ display: 'flex', flexDirection: 'coloumn', alignItems: 'center', marginTop: 10 }}
+                            onPress={() => {
+                                if (allSelected) {
+                                    let temp = [...recentFiles]
+                                    for (let file of temp) {
+                                        file.selected = false
+                                    }
+                                    setRecentFiles([...temp])
+                                    setAllSelected(false)
+                                    setCurrentMode(false)
+                                } else {
+                                    let temp = [...recentFiles]
+                                    for (let file of temp) {
+                                        file.selected = true
+
+                                    }
+                                    setRecentFiles([...temp])
+                                    setAllSelected(true)
+                                }
+
+                            }}>
+                            <Image source={!allSelected ? require('../assets/images/icons/All.png') : require('../assets/images/icons/selected.png')} style={{ width: 20, height: 20 }} />
+                            <Text style={{ color: defcolors.gray, fontSize: 10, marginTop: 3 }}>All</Text>
+                        </TouchableOpacity>
                     </View>
-                </View>
+                ) : null}
+
             </View>
             <ScrollView style={{ height: '50%', flex: 1, marginTop: 10 }}>
                 {recentFiles.map(recentFileCardView)}
@@ -117,12 +186,12 @@ const HomeScreen = () => {
 
             {/*Button section*/}
 
-            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical:15, paddingTop:20 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 15, paddingTop: 20 }}>
 
                 <TouchableOpacity style={[styles.buttonSection]}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('../assets/images/icons/vector.png')} style={{ width: 12, height: 15, }} />
-                        <Text style={{ color: defcolors.gray, fontSize: 18, marginLeft:10 }}>Import a file</Text>
+                        <Text style={{ color: defcolors.gray, fontSize: 18, marginLeft: 10 }}>Import a file</Text>
                     </View>
 
                 </TouchableOpacity>
@@ -130,7 +199,7 @@ const HomeScreen = () => {
                 <TouchableOpacity style={[styles.buttonSection]}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('../assets/images/icons/camera.png')} style={{ width: 15, height: 15, }} />
-                        <Text style={{ color: defcolors.gray, fontSize: 18, marginLeft:10 }}>Camera</Text>
+                        <Text style={{ color: defcolors.gray, fontSize: 18, marginLeft: 10 }}>Camera</Text>
                     </View>
 
                 </TouchableOpacity>
@@ -169,7 +238,7 @@ const styles = StyleSheet.create({
 
 
     imageContent: {
-        marginEnd:15
+        marginEnd: 15
     },
 
     buttonSection: {
