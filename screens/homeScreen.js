@@ -156,7 +156,7 @@ const HomeScreen = () => {
                 <View style={{ display: 'flex', flexDirection: 'coloumn' }}>
 
                     <Text numberOfLines={2} style={[styles.textContent, { color: defcolors.white, fontSize: 20, fontWeight: 'bold' }]}>{recentFile.fileName}</Text>
-                    <Text style={[styles.textContent, { color: defcolors.gray, fontSize: 16, marginTop: 2 }]}>created {recentFile.date}</Text>
+                    <Text style={[styles.textContent, { color: defcolors.gray, fontSize: 16, marginTop: 2 }]}>Created {recentFile.date}</Text>
 
                 </View>
             </TouchableOpacity>
