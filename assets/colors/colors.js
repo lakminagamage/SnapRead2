@@ -5,6 +5,7 @@ const defcolors = {
     black: '#000000',
     purple: '#9461FF',
     lightPurple: '#D7C3FF',
+    lightGray: 'rgba(83,83,83,0.5)',
 };
 
 export { defcolors };

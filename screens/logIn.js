@@ -6,12 +6,64 @@ import { textInputStyles } from "../assets/styles/textInputStyles";
 import { buttonStyles } from "../assets/styles/buttons";
 import { useNavigation } from "@react-navigation/native";
 import {useState} from 'react';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 
 const LoginScreen = () => {
     const navigation = useNavigation();
     const[username,setUsername] = useState('');
-    const[password,setPassword] = useState('');
+    const[password,setPassword] = useState('123456');
+    
+    const [email, setEmail] = useState("test@gmail.com");
+    
+    const auth=getAuth();
+    const handleLogin = () => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                console.log(user.email);
+                navigation.replace('Home');
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                if(errorCode==="auth/user-not-found"){
+                    alert("User not found,Please check your email.");
+                }
+                else if(errorCode==="auth/wrong-password"){
+                    alert("Wrong credentials");
+                }
+                else if(errorCode==="auth/missing-password"){
+                    alert("Please enter a password");
+                }
+                else if(errorCode==="auth/user-disabled"){
+                    alert("User disabled.contact customer support");
+                }
+                else if(errorCode==="auth/network-request-failed"){
+                    alert("Please check your internet connection");
+                }
+                else {
+                    alert(error.message);
+                }
+                
+            });
+    };
+
+    const validateLogin =() =>{
+        if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+            alert('Entered email is invalid!');
+        }
+        else if(password==""){
+            alert('Please enter password');
+        }
+        else{
+            handleLogin();
+        }
+    }
+
+    
+    
+
     return(
         <View style={styles.container2}>
             <StatusBar backgroundColor={defcolors.midnightGray}/>
@@ -19,9 +71,9 @@ const LoginScreen = () => {
 
             <View style={[textInputStyles.credentialInputContainerForFullPage,{marginTop:40}]}>
                 <Text style={textInputStyles.credentialInputTitle}>Email</Text>  
-                <TextInput onChangeText={text => setUsername(text)} style={textInputStyles.credentialInput} placeholder="Enter your Email" placeholderTextColor={defcolors.gray} /> 
+                <TextInput  value={email} onChangeText={text => setEmail(text)} style={textInputStyles.credentialInput} placeholder="Enter your Email" placeholderTextColor={defcolors.gray} /> 
                 <Text style={[textInputStyles.credentialInputTitle,{marginTop:15}]}>Password</Text>  
-                <TextInput onChangeText={text => setUsername(text)} style={textInputStyles.credentialInput} secureTextEntry={true} placeholder="Enter your Password" placeholderTextColor={defcolors.gray} />  
+                <TextInput value={password} secureTextEntry={true} onChangeText={text => setPassword(text)} style={textInputStyles.credentialInput}  placeholder="Enter your Password" placeholderTextColor={defcolors.gray} />  
 
                 <TouchableOpacity 
                 onPress={() => navigation.navigate('ForgotPassword')}
@@ -31,7 +83,8 @@ const LoginScreen = () => {
 
                 <Text style={textInputStyles.credentialInputTitle}></Text>
                 <TouchableOpacity  style={buttonStyles.primaryButton}
-                onPress={() => navigation.navigate('Home')}
+                
+                onPress={validateLogin}
                 >
                     <Text style={{color:defcolors.white, fontSize:17,fontWeight:'bold'}}>Log In</Text>
                 </TouchableOpacity>
