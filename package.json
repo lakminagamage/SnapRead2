@@ -24,7 +24,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "expo-media-library": "~15.4.1",
-    "expo-camera": "~13.4.2"
+    "expo-camera": "~13.4.2",
+    "expo-document-picker": "~11.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

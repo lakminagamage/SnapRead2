@@ -1,80 +1,123 @@
 import { StyleSheet, Text, View, StatusBar, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { defcolors } from '../assets/colors/colors'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import * as DocumentPicker from 'expo-document-picker';
 
 const HomeScreen = () => {
     const navigation = useNavigation();
     const [recentFiles, setRecentFiles] = useState(
         [
-            {
-                "key": 1,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 2,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 3,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 4,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 5,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 6,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 7,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 8,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
-            {
-                "key": 9,
-                "fileName": "SnapRead 23-07-2023 Doc1",
-                "date": '23-07-2023 17:12',
-                "image": require('../assets/images/icons/Book.jpg'),
-                selected: false
-            },
+            // {
+            //     "key": 1,
+            //     "fileName": "SnapRead 23-07-2023 Doc1",
+            //     "date": '23-07-2023 17:12',
+            //     uri: '',
+            //     selected: false
+            // },
         ]
     )
 
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({
+            type: '*/*',
+            copyToCacheDirectory: true,
+            multiple: false
+        });
+        console.log('opening');
+        if (result.type == 'cancel') {
+
+            console.log('cancel');
+        } else {
+            console.log(result);
+
+            if(result.assets[0].mimeType != 'application/pdf'){
+                alert('File type not supported. Please open a PDF file')
+                return
+            }
+
+            for(let file of recentFiles){
+                if(file.uri == result.assets[0].uri || file.fileName == result.assets[0].name){
+                    alert('File already exists')
+                    return
+                }
+            }
+
+            let savingJSON = {
+                key: 1,
+                fileName: result.assets[0].name,
+                date: new Date().toLocaleString(),
+                uri: result.assets[0].uri,
+                selected: false
+            }
+
+            let temp = [...recentFiles]
+            for (let file of temp) {
+                file.key += 1
+            }
+            temp.unshift(savingJSON)
+            // Remove last element of the array if it exceeds 15 count
+            if (temp.length > 15) {
+                temp.pop()
+            }
+            setRecentFiles([...temp])
+            saveRecentFiles([...temp])
+        }
+    };
+
+
     const [currentMode, setCurrentMode] = useState(false) // false -> Normal mode, true -> Selection mode
     const [allSelected, setAllSelected] = useState(false) // false -> All not selected, true -> All selected
+
+
+
+    const getSelectedCount = () => {
+        let selectedCount = 0;
+        for (let file of recentFiles) {
+            if (file.selected) {
+                selectedCount++;
+            }
+        }
+        console.log(selectedCount);
+        return selectedCount;
+    }
+
+    const deleteRecentFile = () => {
+        if(currentMode){
+            let temp = [...recentFiles]
+            for (let file of temp) {
+                if (file.selected) {
+                    temp.splice(file.key - 1, 1)
+                }
+            }
+
+            for(let i = 0; i < temp.length; i++){
+                temp[i].key = i + 1;
+            }
+    
+            setRecentFiles([...temp])
+            setCurrentMode(false)
+            setAllSelected(false)
+            saveRecentFiles([...temp])
+        }
+    }
+
+    useEffect(() => {
+        //saveRecentFiles([]);
+        getRecentFiles().then((savedRecentFiles) => {
+            if (!(savedRecentFiles.length == 0 || savedRecentFiles == null)) {
+                console.log(savedRecentFiles);
+                setRecentFiles(savedRecentFiles)
+            } else {
+                setRecentFiles([]);
+                console.log('empty');
+            }
+
+
+        });
+    }, [])
 
     const recentFileCardView = (recentFile) => {
         // {
@@ -84,8 +127,9 @@ const HomeScreen = () => {
         //     image:require('../assets/images/icons/Book.jpg')
         // }
         return (
-            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 5, backgroundColor: recentFile.selected ? defcolors.lightGray : 'transparent' }}
+            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'flex-start', paddingVertical: 5, paddingHorizontal:20, backgroundColor: recentFile.selected ? defcolors.lightGray : 'transparent' }}
                 onPress={() => {
+                    console.log('pressed')
                     if (!currentMode) {
                         navigation.navigate('SummerizedPage')
                     } else {
@@ -106,27 +150,17 @@ const HomeScreen = () => {
                         temp[recentFile.key - 1].selected = true
                         setRecentFiles([...temp])
                     }
-                }}>
-                <Image source={recentFile.image} style={[styles.imageContent, styles.Border, { width: 80, height: 80, }]} />
-                <View style={{ display: 'flex', flexDirection: 'coloumn', alignItems: 'left' }}>
+                }}
+                key={recentFile.key}>
+                <Image source={require('../assets/images/icons/Book.jpg')} style={[styles.imageContent, styles.Border, { width: 80, height: 80, }]} />
+                <View style={{ display: 'flex', flexDirection: 'coloumn' }}>
 
-                    <Text style={[styles.textContent, { color: defcolors.white, fontSize: 20, fontWeight: 'bold' }]}>{recentFile.fileName}</Text>
-                    <Text style={[styles.textContent, { color: defcolors.gray, fontSize: 16, marginTop: 5 }]}>created {recentFile.date}</Text>
+                    <Text numberOfLines={2} style={[styles.textContent, { color: defcolors.white, fontSize: 20, fontWeight: 'bold' }]}>{recentFile.fileName}</Text>
+                    <Text style={[styles.textContent, { color: defcolors.gray, fontSize: 16, marginTop: 2 }]}>created {recentFile.date}</Text>
 
                 </View>
             </TouchableOpacity>
         )
-    }
-
-    const getSelectedCount = () => {
-        let selectedCount = 0;
-        for (let file of recentFiles) {
-            if (file.selected) {
-                selectedCount++;
-            }
-        }
-        console.log(selectedCount);
-        return selectedCount;
     }
 
     return (
@@ -145,7 +179,9 @@ const HomeScreen = () => {
                 <Text style={{ color: defcolors.gray, fontSize: 22, fontWeight: 'bold' }}>Recent files</Text>
                 {currentMode ? (
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => deleteRecentFile()}
+                            >
                             <Image source={require('../assets/images/icons/delete.png')} style={{ width: 20, height: 20, marginHorizontal: 30 }} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{ display: 'flex', flexDirection: 'coloumn', alignItems: 'center', marginTop: 10 }}
@@ -188,7 +224,8 @@ const HomeScreen = () => {
 
             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 15, paddingTop: 20 }}>
 
-                <TouchableOpacity style={[styles.buttonSection]}>
+                <TouchableOpacity style={[styles.buttonSection]}
+                    onPress={() => pickDocument()}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Image source={require('../assets/images/icons/vector.png')} style={{ width: 12, height: 15, }} />
                         <Text style={{ color: defcolors.gray, fontSize: 18, marginLeft: 10 }}>Import a file</Text>
@@ -227,10 +264,10 @@ const styles = StyleSheet.create({
 
     textContent: {
         textAlign: 'left',
-        marginRight: "5%",
-
-
+        width:200
+        
     },
+
     Border: {
         borderColor: defcolors.purple,
         borderWidth: 1,
@@ -265,6 +302,22 @@ const styles = StyleSheet.create({
 
 
     },
-
-
 })
+
+const getRecentFiles = async () => {
+    try {
+        const files = await AsyncStorage.getItem('recentFiles');
+        return files ? JSON.parse(files) : [];
+    } catch (error) {
+        console.error('Error retrieving URIs:', error);
+        return [];
+    }
+}
+
+const saveRecentFiles = async (uris) => {
+    try {
+        await AsyncStorage.setItem('recentFiles', JSON.stringify(uris));
+    } catch (error) {
+        console.error('Error saving URIs:', error);
+    }
+}
